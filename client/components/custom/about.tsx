@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { TextGenerateEffect } from "@/components/ui/text-genrate-effect";
+
 import Image from "next/image"
 const about = () => {
 

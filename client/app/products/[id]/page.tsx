@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
 import Image from 'next/image';
@@ -20,7 +20,7 @@ export interface Product {
   image: string;
 }
 
-const ProductDetail: React.FC = () => {
+const Page: React.FC = () => {
   const { id } = useParams();
   const [product, setProduct] = useState<any>(null);
   const { cart, setCart } = useMycontext();
@@ -82,15 +82,17 @@ const ProductDetail: React.FC = () => {
     }
   }, [id]);
 
-  const fetchProductDetails = async (productId: string | string[]) => {
+  const fetchProductDetails = useCallback(async (productId: string | string[]) => {
     try {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/id/${id}`);
       setProduct(response.data);
     } catch (error) {
       console.error('Error fetching product details:', error);
     }
-  };
-
+  }, [id]);
+  useEffect(() => {
+    fetchProductDetails(id);
+  }, [fetchProductDetails]);
   if (!product) {
     return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
   }
@@ -172,4 +174,4 @@ const ProductDetail: React.FC = () => {
   );
 };
 
-export default ProductDetail;
+export default Page;
